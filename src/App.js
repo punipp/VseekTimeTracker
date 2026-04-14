@@ -6,7 +6,8 @@ import { auth } from "./firebase";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Dashboard from "./components/Dashboard";
-import AttendanceReport from "./AttendanceReport"; // ✅ NEW
+import Leave from "./components/Leave";
+import Reimbursement from "./components/Reimbursement";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -25,26 +26,19 @@ function App() {
     return <h2 style={{ textAlign: "center" }}>Loading...</h2>;
   }
 
-  // 🔒 Protected Route Wrapper
   const ProtectedRoute = ({ children }) => {
     return user ? children : <Navigate to="/" replace />;
   };
 
   return (
     <Routes>
-      {/* 🔐 LOGIN */}
       <Route
         path="/"
         element={user ? <Navigate to="/dashboard" /> : <Login />}
       />
 
-      {/* 🆕 SIGNUP */}
-      <Route
-        path="/signup"
-        element={user ? <Navigate to="/dashboard" /> : <Signup />}
-      />
+      <Route path="/signup" element={<Signup />} />
 
-      {/* 📊 DASHBOARD */}
       <Route
         path="/dashboard"
         element={
@@ -54,20 +48,15 @@ function App() {
         }
       />
 
-      {/* 📄 ATTENDANCE REPORT (NEW) */}
       <Route
-        path="/report"
+        path="/leave"
         element={
           <ProtectedRoute>
-            <AttendanceReport />
+            <Leave />
           </ProtectedRoute>
         }
       />
-
-      <Route
-        path="*"
-        element={<Navigate to={user ? "/dashboard" : "/"} />}
-      />
+      <Route path="/reimbursement" element={<Reimbursement />} />
     </Routes>
   );
 }
